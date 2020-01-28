@@ -15,9 +15,9 @@ jobs:
       uses: actions/setup-dotnet@v1
     - name: Build with dotnet
       run: dotnet build ./EarablesBLE/EarablesBLE/EarablesBLE.csproj --configuration Release
-    - name: Install NuGet client
-      uses: warrenbuckley/Setup-Nuget@v1
+    - name: Create the package
+      run: dotnet pack --configuration Release ./EarablesBLE/EarablesBLE/EarablesBLE.csproj
     - name: Add private GitHub registry to NuGet
-      run: nuget sources add -name "GPR" -source https://nuget.pkg.github.com/ichbinstudent/index.json -username ichbinstudent -password ${{ secrets.GITHUB_PACKAGE_TOKEN }}
+      run: dotnet nuget sources add -name "GPR" -source https://nuget.pkg.github.com/ichbinstudent/index.json -username ichbinstudent -password ${{ secrets.GITHUB_PACKAGE_TOKEN }}
     - name: Push generated package to GitHub registry
-      run: nuget push EarablesBLE\bin\Release\*.nupkg -Source "GPR" -SkipDuplicate
+      run: dotnet nuget push EarablesBLE\bin\Release\*.nupkg -Source "GPR" -SkipDuplicate
