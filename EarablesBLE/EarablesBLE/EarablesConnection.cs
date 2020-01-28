@@ -16,7 +16,7 @@ namespace EarablesKIT.Models.Library
     /// <summary>
     /// This class is responsible for the connection with teh earables
     /// </summary>
-    class EarablesConnection : IEarablesConnection
+    public class EarablesConnection : IEarablesConnection
     {
         //
         private IBluetoothLE ble = CrossBluetoothLE.Current;
