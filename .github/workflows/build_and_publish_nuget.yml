@@ -11,8 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Build with dotnet
-      run: dotnet build ./EarablesBLE/EarablesBLE/EarablesBLE.csproj --configuration Release
-      shell: ls
+      run: dotnet build ./EarablesBLE/EarablesBLE.csproj --configuration Release
     - name: Install NuGet client
       uses: warrenbuckley/Setup-Nuget@v1
     - name: Add private GitHub registry to NuGet
