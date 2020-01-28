@@ -10,6 +10,9 @@ jobs:
     name: list on nuget
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
     - name: Build with dotnet
       run: dotnet build ./EarablesBLE/EarablesBLE/EarablesBLE.csproj --configuration Release
     - name: Install NuGet client
