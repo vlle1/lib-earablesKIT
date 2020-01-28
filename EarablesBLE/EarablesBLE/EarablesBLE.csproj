@@ -5,6 +5,7 @@
     <ApplicationIcon />
     <Win32Resource />
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
