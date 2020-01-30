@@ -237,7 +237,7 @@ namespace EarablesKIT.Models.Library
         /// <summary>
         /// Starts the Scanning
         /// </summary>
-        public async void StartScanning()
+        public void StartScanning()
         {
             adapter.DeviceDiscovered += (s, a) =>
             {
@@ -271,7 +271,7 @@ namespace EarablesKIT.Models.Library
         /// Sets the aaccelerometerLPF
         /// </summary>
         /// <param name="accelerometerLPF">The value on which the accelerometerLPF should be set</param>
-        private async void SetAccelerometerLPF(LPF_Accelerometer accelerometerLPF)
+        private void SetAccelerometerLPF(LPF_Accelerometer accelerometerLPF)
         {
             CheckConnection();
             Device.BeginInvokeOnMainThread(new Action(async () =>
@@ -304,7 +304,7 @@ namespace EarablesKIT.Models.Library
         /// Get the accelerometerLPF from the device
         /// Not needed but helpfull for testing
         /// </summary>
-        private async void GetAccelerometerLPFFromDevice()
+        private async void getAccelerometerLPFFromDevice()
         {
             CheckConnection();
             byte[] bytes = await characters.AccelerometerGyroscopeLPFChar.ReadAsync();
@@ -364,7 +364,7 @@ namespace EarablesKIT.Models.Library
         /// Get the gyroscopeLPF from the device
         /// Not needed but helpfull for testing
         /// </summary>
-        private async void GetGyroscopeLPFFromDevice()
+        private async void getGyroscopeLPFFromDevice()
         {
             CheckConnection();
             byte[] bytes = await characters.AccelerometerGyroscopeLPFChar.ReadAsync();
@@ -408,13 +408,13 @@ namespace EarablesKIT.Models.Library
         /// Set the accelerometer range
         /// Not needed but helpfull for testing
         /// </summary>
-        private async void setAccelerometerRange()
+        private async void setAccelerometerRange(int range)
         {
             CheckConnection();
             Device.BeginInvokeOnMainThread(new Action(async () =>
             {
                 // Range kann sein 0x00 = 2g, 0x08 = 4g, 0x10 = 8g, 0x18 = 16g
-                int range = 0x00;
+                //int range = 0x00;
                 byte[] bytesRead = await characters.AccelerometerGyroscopeLPFChar.ReadAsync();
                 //clear Bit 4 and 3 from Data2
                 int data2 = bytesRead[5] & 0xE7;
@@ -432,13 +432,13 @@ namespace EarablesKIT.Models.Library
         /// Set the gyroscope range
         /// Not needed but helpfull for testing
         /// </summary>
-        private async void setGyroscopeRange()
+        private async void setGyroscopeRange(int range)
         {
             CheckConnection();
             Device.BeginInvokeOnMainThread(new Action(async () =>
             {
                 // Range kann sein 0x00 = 250deg/s, 0x08 = 500deg/s, 0x10 = 1000deg/s, 0x18 = 2000deg/s
-                int range = 0x18;
+                //int range = 0x18;
                 byte[] bytesRead = await characters.AccelerometerGyroscopeLPFChar.ReadAsync();
                 //clear Bit 4 and 3 from Data1
                 int data1 = bytesRead[4] & 0xE7;
