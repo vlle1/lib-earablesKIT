@@ -1,0 +1,38 @@
+name: .NET Core build and publish
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    name: list on nuget
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+    - name: Build with dotnet
+      run: dotnet build ./EarablesBLE/EarablesBLE/EarablesBLE.csproj --configuration Release
+    - name: Create the package
+      run: dotnet pack --configuration Release ./EarablesBLE/EarablesBLE/EarablesBLE.csproj
+    
+    - uses: actions/checkout@v2
+
+    # Required for a specific dotnet version that doesn't come with ubuntu-latest / windows-latest
+    # Visit bit.ly/2synnZl to see the list of SDKs that are pre-installed with ubuntu-latest / windows-latest
+    # - name: Setup dotnet
+    #   uses: actions/setup-dotnet@v1
+    #   with:
+    #     dotnet-version: 3.1.100
+
+    # Publish
+    - name: publish on version change
+      uses: rohith/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: ./EarablesBLE/EarablesBLE/EarablesBLE.csproj # Relative to repository root
+        VERSION_FILE_PATH: ./EarablesBLE/EarablesBLE/VersionInfo.xml # Filepath with version info, relative to repository root. Defaults to project file
+        VERSION_REGEX: <Version>(.*)<\/Version> # Regex pattern to extract version info in a capturing group
+        TAG_COMMIT: false # Flag to enable / disalge git tagging
+        NUGET_KEY: ${{secrets.actions_NUGET_API_KEY}} # nuget.org API key
