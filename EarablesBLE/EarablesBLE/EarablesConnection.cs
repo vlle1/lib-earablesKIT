@@ -307,6 +307,7 @@ namespace EarablesKIT.Models.Library
         /// <returns>Returns the LPF for the accelerometer</returns>
         private LPF_Accelerometer GetAccelerometerLPF()
         {
+            CheckConnection();
             return config.AccelerometerLPF;
         }
 
@@ -371,6 +372,7 @@ namespace EarablesKIT.Models.Library
         /// <returns>Returns the LPF for the gyroscope</returns>
         private LPF_Gyroscope GetGyroscopeLPF()
         {
+            CheckConnection();
             return config.GyroscopeLPF;
         }
 
