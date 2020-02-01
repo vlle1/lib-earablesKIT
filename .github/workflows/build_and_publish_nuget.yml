@@ -32,7 +32,7 @@ jobs:
       uses: rohith/publish-nuget@v2
       with:
         PROJECT_FILE_PATH: ./EarablesBLE/EarablesBLE/EarablesBLE.csproj # Relative to repository root
-        VERSION_FILE_PATH: ./EarablesBLE/EarablesBLE/VersionInfo.xml # Filepath with version info, relative to repository root. Defaults to project file
+        VERSION_FILE_PATH: ./EarablesBLE/EarablesBLE/EarablesBLE.csproj # Filepath with version info, relative to repository root. Defaults to project file
         VERSION_REGEX: <Version>(.*)<\/Version> # Regex pattern to extract version info in a capturing group
         TAG_COMMIT: false # Flag to enable / disalge git tagging
         NUGET_KEY: ${{secrets.actions_NUGET_API_KEY}} # nuget.org API key
