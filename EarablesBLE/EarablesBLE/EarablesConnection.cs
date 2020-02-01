@@ -25,7 +25,7 @@ namespace EarablesKIT.Models.Library
         private IDevice device;
         // Saves the configurations
         private ConfigContainer config = new ConfigContainer();
-        // caching the bytearray which contains the offset
+        // Caching the bytearray which contains the offset
         private byte[] byteOffset;
         // Holds all characteristics
         private Characteristics characters = new Characteristics();
@@ -208,7 +208,7 @@ namespace EarablesKIT.Models.Library
         {
             byte[] bytesIMUValue = args.Characteristic.Value;
             //Check Checksum
-            CheckIMUChecksum(bytes);
+            CheckIMUChecksum(bytesIMUValue);
             IMUDataEntry imuDataEntry = ExtractIMUDataString(bytesIMUValue, config.AccScaleFactor, config.GyroScaleFactor, byteOffset);
             IMUDataReceived?.Invoke(this, new DataEventArgs(imuDataEntry, config));
         }
@@ -245,7 +245,7 @@ namespace EarablesKIT.Models.Library
         /// <summary>
         /// Starts the Scanning
         /// </summary>
-        public void StartScanning()
+        public async void StartScanning()
         {
             adapter.DeviceDiscovered += (s, a) =>
             {
@@ -328,7 +328,7 @@ namespace EarablesKIT.Models.Library
         /// Sets the gyroscope LPF
         /// </summary>
         /// <param name="gyroscopeLPF">The value on which the gyroscopeLPF should be set</param>
-        private async void SetGyroscopeLPF(LPF_Gyroscope gyroscopeLPF)
+        private void SetGyroscopeLPF(LPF_Gyroscope gyroscopeLPF)
         {
             CheckConnection();
             Device.BeginInvokeOnMainThread(new Action(async () =>
@@ -428,7 +428,7 @@ namespace EarablesKIT.Models.Library
         /// Set the accelerometer range
         /// Not needed but helpfull for testing
         /// </summary>
-        private async void SetAccelerometerRange(int range)
+        private void SetAccelerometerRange(int range)
         {
             CheckConnection();
             Device.BeginInvokeOnMainThread(new Action(async () =>
@@ -454,7 +454,7 @@ namespace EarablesKIT.Models.Library
         /// Set the gyroscope range
         /// Not needed but helpfull for testing
         /// </summary>
-        private async void SetGyroscopeRange(int range)
+        private void SetGyroscopeRange(int range)
         {
             CheckConnection();
             Device.BeginInvokeOnMainThread(new Action(async () =>
