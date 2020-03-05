@@ -7,7 +7,7 @@ namespace EarablesKIT.Models.Library
     /// <summary>
     /// This class exctract the informations from the bytearrays
     /// </summary>
-    class IMUDataExtractor
+    public static class IMUDataExtractor
     {
         /// <summary>
         /// Extracts the accelerometer and gyroscope information from the bytearray
@@ -28,7 +28,7 @@ namespace EarablesKIT.Models.Library
             // Get the value from the accelerometer
             short AccXRaw = (short)(bytesIMUData[10] * 256 + bytesIMUData[11]);
             short AccYRaw = (short)(bytesIMUData[12] * 256 + bytesIMUData[13]);
-            short AccZRaw = (short)(bytesIMUData[14] * 256 + bytesIMUData[14]);
+            short AccZRaw = (short)(bytesIMUData[14] * 256 + bytesIMUData[15]);
 
             // Calculate the accelerometer in g
             float AccGX = (float)(AccXRaw / accScaleFactor);
