@@ -128,7 +128,7 @@ namespace EarablesKIT.Models.Library
         public static double ExtractIMURangeGyroscope(byte[] bytes)
         {
             // Get the 3th and the 4th bit from Data2
-            int byteValue = bytes[5] & 0x18;
+            int byteValue = bytes[4] & 0x18;
             double Range = 0;
             // Select the right range
             switch (byteValue)
