@@ -315,7 +315,8 @@ namespace EarablesKIT.Models.Library
         /// Get the accelerometerLPF from the device
         /// Not needed but helpfull for testing
         /// </summary>
-        private async void GetAccelerometerLPFFromDevice()
+        /// <returns>Returns the task with the LPF for the accleromerter</returns>
+        private async System.Threading.Tasks.Task<LPF_Accelerometer> GetAccelerometerLPFFromDeviceAsync()
         {
             CheckConnection();
             byte[] bytes = await characters.AccelerometerGyroscopeLPFChar.ReadAsync();
@@ -323,6 +324,8 @@ namespace EarablesKIT.Models.Library
             CheckChecksum(bytes);
             // read only the 4 LSBs 
             int accEnumValue = (int)(bytes[6] & 0x0F);
+            LPF_Accelerometer lpf = (LPF_Accelerometer)accEnumValue;
+            return lpf;
         }
 
         /// <summary>
@@ -380,7 +383,8 @@ namespace EarablesKIT.Models.Library
         /// Get the gyroscopeLPF from the device
         /// Not needed but helpfull for testing
         /// </summary>
-        private async void GetGyroscopeLPFFromDevice()
+        /// <returns>Returns the Task with the LPF for the gyroscope </returns>
+        private async System.Threading.Tasks.Task<LPF_Gyroscope> GetGyroscopeLPFFromDevice()
         {
             CheckConnection();
             byte[] bytes = await characters.AccelerometerGyroscopeLPFChar.ReadAsync();
@@ -389,14 +393,17 @@ namespace EarablesKIT.Models.Library
             // read only the 2 LSBs and checks if the Gyro LPF is bypassed
             int b = (int)(bytes[4] & 0x03);
             // If the gyro LPF is bypassed it is representet as OFF in the LPF_Gyroscope Enum
+            int gyroEnumValue;
             if (b == 0)
             {
-                int gyroEnumValue = (int)(bytes[3] & 0x07);
+                gyroEnumValue = (int)(bytes[3] & 0x07);
             }
             else
             {
-                int gyroEnumValue = 8;
+                gyroEnumValue = 8;
             }
+            LPF_Gyroscope lpf = (LPF_Gyroscope)gyroEnumValue;
+            return lpf;
         }
 
         /// <summary>
