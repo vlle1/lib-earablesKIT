@@ -18,13 +18,16 @@ namespace EarablesKIT.Models.Library
     /// </summary>
     public class EarablesConnection : IEarablesConnection
     {
-        //
+        
         private IBluetoothLE ble = CrossBluetoothLE.Current;
         private IAdapter adapter = CrossBluetoothLE.Current.Adapter;
         // The connectet device
         private IDevice device;
         // Saves the configurations
         private ConfigContainer config = new ConfigContainer();
+        // Standart scalefactors
+        int STANDART_ACC_SCALEFACTOR = 8192;
+        double STANDART_GYRO_SCALEFACTOR = 65.5; 
         // Caching the bytearray which contains the offset
         private byte[] byteOffset;
         // Holds all characteristics
@@ -90,6 +93,8 @@ namespace EarablesKIT.Models.Library
                 // Set scalefactors on norm
                 byte[] bytes = { 0x59, 0x20, 0x04, 0x06, 0x08, 0x08, 0x06 };
                 await characters.AccelerometerGyroscopeLPFChar.WriteAsync(bytes);
+                config.GyroScaleFactor = STANDART_GYRO_SCALEFACTOR;
+                config.AccScaleFactor = STANDART_ACC_SCALEFACTOR;
 
                 // Starts the updating from the characteristics
                 try
@@ -456,6 +461,22 @@ namespace EarablesKIT.Models.Library
                 // Write the new Accelerometerrange on the Earables
                 byte[] bytesWrite = { 0x59, Convert.ToByte(checksum), bytesRead[2], bytesRead[3], bytesRead[4], Convert.ToByte(data2), bytesRead[6] };
                 await characters.AccelerometerGyroscopeLPFChar.WriteAsync(bytesWrite);
+                // Save the selected Range
+                switch (range)
+                {
+                    case 0x00:
+                        config.AccScaleFactor = 16384;
+                        break;
+                    case 0x08:
+                        config.AccScaleFactor = 8192;
+                        break;
+                    case 0x10:
+                        config.AccScaleFactor = 4096;
+                        break;
+                    case 0x18:
+                        config.AccScaleFactor = 2048;
+                        break;
+                }
             }));
         }
 
@@ -482,6 +503,22 @@ namespace EarablesKIT.Models.Library
                 // Write the new Gyroscoperange on the Earables
                 byte[] bytesWrite = { 0x59, Convert.ToByte(checksum), bytesRead[2], bytesRead[3], Convert.ToByte(data1), bytesRead[5], bytesRead[6] };
                 await characters.AccelerometerGyroscopeLPFChar.WriteAsync(bytesWrite);
+                // Save the selected Range
+                switch (range)
+                {
+                    case 0x00:
+                        config.GyroScaleFactor = 131;
+                        break;
+                    case 0x08:
+                        config.GyroScaleFactor = 65.5;
+                        break;
+                    case 0x10:
+                        config.GyroScaleFactor = 32.8;
+                        break;
+                    case 0x18:
+                        config.GyroScaleFactor = 16.4;
+                        break;
+                }
             }));
         }
 
