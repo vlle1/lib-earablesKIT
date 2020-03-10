@@ -25,9 +25,6 @@ namespace EarablesKIT.Models.Library
         private IDevice device;
         // Saves the configurations
         private ConfigContainer config = new ConfigContainer();
-        // Standart scalefactors
-        int STANDART_ACC_SCALEFACTOR = 8192;
-        double STANDART_GYRO_SCALEFACTOR = 65.5; 
         // Caching the bytearray which contains the offset
         private byte[] byteOffset;
         // Holds all characteristics
@@ -119,8 +116,6 @@ namespace EarablesKIT.Models.Library
 
                 // Initialise the BatteryVoltage the first time after connection in case it will be used befor the Batteryvalue updates the first time
                 await initBatteryVoltage();
-
-
             }));
         }
 
@@ -441,6 +436,7 @@ namespace EarablesKIT.Models.Library
         /// <summary>
         /// Set the accelerometer range
         /// Not needed but helpfull for testing
+        /// Takes the tange as an integer 0x00 = 2g, 0x08 = 4g, 0x10 = 8g, 0x18 = 16g
         /// </summary>
         private void SetAccelerometerRange(int range)
         {
@@ -483,6 +479,7 @@ namespace EarablesKIT.Models.Library
         /// <summary>
         /// Set the gyroscope range
         /// Not needed but helpfull for testing
+        /// Takes the tange as an integer 0x00 = 250deg/s, 0x08 = 500deg/s, 0x10 = 1000deg/s, 0x18 = 2000deg/s
         /// </summary>
         private void SetGyroscopeRange(int range)
         {
@@ -503,7 +500,7 @@ namespace EarablesKIT.Models.Library
                 // Write the new Gyroscoperange on the Earables
                 byte[] bytesWrite = { 0x59, Convert.ToByte(checksum), bytesRead[2], bytesRead[3], Convert.ToByte(data1), bytesRead[5], bytesRead[6] };
                 await characters.AccelerometerGyroscopeLPFChar.WriteAsync(bytesWrite);
-                // Save the selected Range
+                // Save the selected Rangem 
                 switch (range)
                 {
                     case 0x00:
