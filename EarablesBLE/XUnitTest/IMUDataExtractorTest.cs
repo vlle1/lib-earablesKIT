@@ -6,8 +6,14 @@ using static EarablesKIT.Models.Library.IMUDataExtractor;
 
 namespace XUnitTest
 {
+    /// <summary>
+    /// This class test the static methods from the class IMUDataExtractor
+    /// </summary>
     public class IMUDataExtractorTest
     {
+        /// <summary>
+        /// Tests the method ExtractIMUDataString
+        /// </summary>
         [Fact]
         public void ExtractStringTest()
         {
@@ -18,19 +24,25 @@ namespace XUnitTest
             byte[] offset = new byte[15];
             IMUDataEntry entry = ExtractIMUDataString(byteIMUData, accScaleFactor, gyroScaleFactor, offset);
 
-            Assert.Equal((10/9.80665) , (double)entry.Acc.G_X, 2);
-            Assert.Equal(-30/9.80665, (double)entry.Acc.G_Y, 2);
-            Assert.Equal(1.234/9.80665, (double)entry.Acc.G_Z, 2);
+            // Tests the right calculation for the Acceleration in G
+            Assert.Equal((10 / 9.80665), (double)entry.Acc.G_X, 2);
+            Assert.Equal(-30 / 9.80665, (double)entry.Acc.G_Y, 2);
+            Assert.Equal(1.234 / 9.80665, (double)entry.Acc.G_Z, 2);
 
+            // Tests the right calculation for the Acceleration in M/s
             Assert.Equal(10, (double)entry.Acc.MperS_X, 2);
             Assert.Equal(-30, (double)entry.Acc.MperS_Y, 2);
             Assert.Equal(1.234, (double)entry.Acc.MperS_Z, 2);
 
+            // Tests the right calculation for the Gyroscope in Deg/s
             Assert.Equal(3.007, (double)entry.Gyro.DegsPerSec_X, 2);
             Assert.Equal(13.37, (double)entry.Gyro.DegsPerSec_Y, 2);
             Assert.Equal(15.25, (double)entry.Gyro.DegsPerSec_Z, 2);
         }
 
+        /// <summary>
+        /// Test the method ExtractIMURangeAccelerometer
+        /// </summary>
         [Fact]
         public void ExtractIMURangeAccelerometerTest()
         {
@@ -41,6 +53,9 @@ namespace XUnitTest
             Assert.Equal(4, range);
         }
 
+        /// <summary>
+        /// Tests the method ExtractIMUScaleFactorAccelerometer
+        /// </summary>
         [Fact]
         public void ExtractIMUScaleFactorAccelerometerTest()
         {
@@ -51,6 +66,9 @@ namespace XUnitTest
             Assert.Equal(8192, range);
         }
 
+        /// <summary>
+        /// Tests the method ExtractIMURangeGyroscope
+        /// </summary>
         [Fact]
         public void ExtractIMURangeGyroscopeTest()
         {
@@ -61,6 +79,9 @@ namespace XUnitTest
             Assert.Equal(500, range);
         }
 
+        /// <summary>
+        /// Test the method ExctractIMUScaleFactorGyroscope
+        /// </summary>
         [Fact]
         public void ExctractIMUScaleFactorGyroscopeTest()
         {

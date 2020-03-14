@@ -18,7 +18,6 @@ namespace EarablesKIT.Models.Library
     /// </summary>
     public class EarablesConnection : IEarablesConnection
     {
-        
         private IBluetoothLE ble = CrossBluetoothLE.Current;
         private IAdapter adapter = CrossBluetoothLE.Current.Adapter;
         // The connectet device
@@ -60,7 +59,6 @@ namespace EarablesKIT.Models.Library
                 throw new AllreadyConnectedException("Error, allready connected");
             }
             this.device = device;
-
             Device.BeginInvokeOnMainThread(new Action(async () =>
             {
                 // Set the requiered connection Parameters
@@ -144,17 +142,6 @@ namespace EarablesKIT.Models.Library
             }
         }
 
-        //  public void OnDeviceConnected(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs args)
-        //  {
-        //      connected = true;
-        //      Device.BeginInvokeOnMainThread(new Action(() =>
-        //      {
-        //          DeviceEventArgs e = new DeviceEventArgs(connected, args.Device.Name);
-        //          DeviceConnectionStateChanged?.Invoke(this, e);
-        //      }));
-        //  }
-
-
         /// <summary>
         /// Catches the event DeviceDisconnected from the earables and throws the event DeviceConnectionStateChanged
         /// </summary>
@@ -170,7 +157,11 @@ namespace EarablesKIT.Models.Library
             }));
         }
 
-        // Brauchen wir die methode wenn sie keinen unterschied macht zu der oben drüber? man kann ja was ergänzen um zu signalisieren, dass die verbindung abgebrochen wurde
+        /// <summary>
+        /// Catches the event DeviceConnectionLost from the earables and throws the event DeviceConnectionStateChanged
+        /// </summary>
+        /// <param name="sender">The Objekt which has thrown the event</param>
+        /// <param name="args">The arguments from the exception</param>
         private void OnDeviceConnectionLost(object sender, DeviceErrorEventArgs args)
         {
             connected = false;
@@ -438,11 +429,14 @@ namespace EarablesKIT.Models.Library
         /// Not needed but helpfull for testing
         /// Takes the tange as an integer 0x00 = 2g, 0x08 = 4g, 0x10 = 8g, 0x18 = 16g
         /// </summary>
-        private void SetAccelerometerRange(int range)
+        public void SetAccelerometerRange(int range)
         {
-            CheckConnection();
-            Device.BeginInvokeOnMainThread(new Action(async () =>
+            if (range == 0x00 | range == 0x08 | range == 0x10 | range == 18)
             {
+
+                CheckConnection();
+                Device.BeginInvokeOnMainThread(new Action(async () =>
+                {
                 // Range kann sein 0x00 = 2g, 0x08 = 4g, 0x10 = 8g, 0x18 = 16g
                 //int range = 0x00;
                 byte[] bytesRead = await characters.AccelerometerGyroscopeLPFChar.ReadAsync();
@@ -456,24 +450,26 @@ namespace EarablesKIT.Models.Library
                 int checksum = bytesRead[2] + bytesRead[3] + bytesRead[4] + data2 + bytesRead[6];
                 // Write the new Accelerometerrange on the Earables
                 byte[] bytesWrite = { 0x59, Convert.ToByte(checksum), bytesRead[2], bytesRead[3], bytesRead[4], Convert.ToByte(data2), bytesRead[6] };
-                await characters.AccelerometerGyroscopeLPFChar.WriteAsync(bytesWrite);
+                    await characters.AccelerometerGyroscopeLPFChar.WriteAsync(bytesWrite);
                 // Save the selected Range
                 switch (range)
-                {
-                    case 0x00:
-                        config.AccScaleFactor = 16384;
-                        break;
-                    case 0x08:
-                        config.AccScaleFactor = 8192;
-                        break;
-                    case 0x10:
-                        config.AccScaleFactor = 4096;
-                        break;
-                    case 0x18:
-                        config.AccScaleFactor = 2048;
-                        break;
-                }
-            }));
+                    {
+                        case 0x00:
+                            config.AccScaleFactor = 16384;
+                            break;
+                        case 0x08:
+                            config.AccScaleFactor = 8192;
+                            break;
+                        case 0x10:
+                            config.AccScaleFactor = 4096;
+                            break;
+                        case 0x18:
+                            config.AccScaleFactor = 2048;
+                            break;
+                    }
+
+                }));
+            }
         }
 
         /// <summary>
@@ -481,11 +477,13 @@ namespace EarablesKIT.Models.Library
         /// Not needed but helpfull for testing
         /// Takes the tange as an integer 0x00 = 250deg/s, 0x08 = 500deg/s, 0x10 = 1000deg/s, 0x18 = 2000deg/s
         /// </summary>
-        private void SetGyroscopeRange(int range)
+        public void SetGyroscopeRange(int range)
         {
-            CheckConnection();
-            Device.BeginInvokeOnMainThread(new Action(async () =>
+            if (range == 0x00 | range == 0x08 | range == 0x10 | range == 18)
             {
+                CheckConnection();
+                Device.BeginInvokeOnMainThread(new Action(async () =>
+                {
                 // Range kann sein 0x00 = 250deg/s, 0x08 = 500deg/s, 0x10 = 1000deg/s, 0x18 = 2000deg/s
                 //int range = 0x18;
                 byte[] bytesRead = await characters.AccelerometerGyroscopeLPFChar.ReadAsync();
@@ -499,24 +497,25 @@ namespace EarablesKIT.Models.Library
                 int checksum = bytesRead[2] + bytesRead[3] + data1 + bytesRead[5] + bytesRead[6];
                 // Write the new Gyroscoperange on the Earables
                 byte[] bytesWrite = { 0x59, Convert.ToByte(checksum), bytesRead[2], bytesRead[3], Convert.ToByte(data1), bytesRead[5], bytesRead[6] };
-                await characters.AccelerometerGyroscopeLPFChar.WriteAsync(bytesWrite);
+                    await characters.AccelerometerGyroscopeLPFChar.WriteAsync(bytesWrite);
                 // Save the selected Rangem 
                 switch (range)
-                {
-                    case 0x00:
-                        config.GyroScaleFactor = 131;
-                        break;
-                    case 0x08:
-                        config.GyroScaleFactor = 65.5;
-                        break;
-                    case 0x10:
-                        config.GyroScaleFactor = 32.8;
-                        break;
-                    case 0x18:
-                        config.GyroScaleFactor = 16.4;
-                        break;
-                }
-            }));
+                    {
+                        case 0x00:
+                            config.GyroScaleFactor = 131;
+                            break;
+                        case 0x08:
+                            config.GyroScaleFactor = 65.5;
+                            break;
+                        case 0x10:
+                            config.GyroScaleFactor = 32.8;
+                            break;
+                        case 0x18:
+                            config.GyroScaleFactor = 16.4;
+                            break;
+                    }
+                }));
+            }
         }
 
         /// <summary>
