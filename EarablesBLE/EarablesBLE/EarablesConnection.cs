@@ -429,7 +429,7 @@ namespace EarablesKIT.Models.Library
         /// Not needed but helpfull for testing
         /// Takes the tange as an integer 0x00 = 2g, 0x08 = 4g, 0x10 = 8g, 0x18 = 16g
         /// </summary>
-        public void SetAccelerometerRange(int range)
+        private void SetAccelerometerRange(int range)
         {
             if (range == 0x00 | range == 0x08 | range == 0x10 | range == 18)
             {
@@ -477,7 +477,7 @@ namespace EarablesKIT.Models.Library
         /// Not needed but helpfull for testing
         /// Takes the tange as an integer 0x00 = 250deg/s, 0x08 = 500deg/s, 0x10 = 1000deg/s, 0x18 = 2000deg/s
         /// </summary>
-        public void SetGyroscopeRange(int range)
+        private void SetGyroscopeRange(int range)
         {
             if (range == 0x00 | range == 0x08 | range == 0x10 | range == 18)
             {
@@ -529,7 +529,7 @@ namespace EarablesKIT.Models.Library
             }
         }
 
-                /// <summary>
+        /// <summary>
         /// Checks if the checksum from the received bytearray is correct
         /// </summary>
         /// <param name="bytes">The bytearray that holds the information about the checksum</param>
