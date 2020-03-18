@@ -40,11 +40,12 @@ namespace XUnitTest
             Assert.Equal(15.25, (double)entry.Gyro.DegsPerSec_Z, 2);
         }
 
+
         /// <summary>
         /// Test the method ExtractIMURangeAccelerometer
         /// </summary>
         [Fact]
-        public void ExtractIMURangeAccelerometerTest()
+        public void ExtractIMURangeAccelerometerTest1()
         {
             byte[] bytes = new byte[6];
             bytes[5] = 0x29;
@@ -54,10 +55,49 @@ namespace XUnitTest
         }
 
         /// <summary>
+        /// Test the method ExtractIMURangeAccelerometer
+        /// </summary>
+        [Fact]
+        public void ExtractIMURangeAccelerometerTest2()
+        {
+            byte[] bytes = new byte[6];
+            bytes[5] = 0x24;
+            int range = ExtractIMURangeAccelerometer(bytes);
+
+            Assert.Equal(2, range);
+        }
+
+        /// <summary>
+        /// Test the method ExtractIMURangeAccelerometer
+        /// </summary>
+        [Fact]
+        public void ExtractIMURangeAccelerometerTest3()
+        {
+            byte[] bytes = new byte[6];
+            bytes[5] = 0x34;
+            int range = ExtractIMURangeAccelerometer(bytes);
+
+            Assert.Equal(8, range);
+        }
+
+        /// <summary>
+        /// Test the method ExtractIMURangeAccelerometer
+        /// </summary>
+        [Fact]
+        public void ExtractIMURangeAccelerometerTest4()
+        {
+            byte[] bytes = new byte[6];
+            bytes[5] = 0x3C;
+            int range = ExtractIMURangeAccelerometer(bytes);
+
+            Assert.Equal(16, range);
+        }
+
+        /// <summary>
         /// Tests the method ExtractIMUScaleFactorAccelerometer
         /// </summary>
         [Fact]
-        public void ExtractIMUScaleFactorAccelerometerTest()
+        public void ExtractIMUScaleFactorAccelerometerTest1()
         {
             byte[] bytes = new byte[6];
             bytes[5] = 0x29;
@@ -67,10 +107,50 @@ namespace XUnitTest
         }
 
         /// <summary>
+        /// Tests the method ExtractIMUScaleFactorAccelerometer
+        /// </summary>
+        [Fact]
+        public void ExtractIMUScaleFactorAccelerometerTest2()
+        {
+            byte[] bytes = new byte[6];
+            bytes[5] = 0x24;
+            int range = ExtractIMUScaleFactorAccelerometer(bytes);
+
+            Assert.Equal(16384, range);
+        }
+
+        /// <summary>
+        /// Tests the method ExtractIMUScaleFactorAccelerometer
+        /// </summary>
+        [Fact]
+        public void ExtractIMUScaleFactorAccelerometerTest3()
+        {
+            byte[] bytes = new byte[6];
+            bytes[5] = 0x34;
+            int range = ExtractIMUScaleFactorAccelerometer(bytes);
+
+            Assert.Equal(4096, range);
+        }
+
+
+        /// <summary>
+        /// Tests the method ExtractIMUScaleFactorAccelerometer
+        /// </summary>
+        [Fact]
+        public void ExtractIMUScaleFactorAccelerometerTest4()
+        {
+            byte[] bytes = new byte[6];
+            bytes[5] = 0x3C;
+            int range = ExtractIMUScaleFactorAccelerometer(bytes);
+
+            Assert.Equal(2048, range);
+        }
+
+        /// <summary>
         /// Tests the method ExtractIMURangeGyroscope
         /// </summary>
         [Fact]
-        public void ExtractIMURangeGyroscopeTest()
+        public void ExtractIMURangeGyroscopeTest1()
         {
             byte[] bytes = new byte[6];
             bytes[4] = 0x29;
@@ -80,16 +160,94 @@ namespace XUnitTest
         }
 
         /// <summary>
+        /// Tests the method ExtractIMURangeGyroscope
+        /// </summary>
+        [Fact]
+        public void ExtractIMURangeGyroscopeTest2()
+        {
+            byte[] bytes = new byte[6];
+            bytes[4] = 0x24;
+            double range = ExtractIMURangeGyroscope(bytes);
+
+            Assert.Equal(250, range);
+        }
+
+        /// <summary>
+        /// Tests the method ExtractIMURangeGyroscope
+        /// </summary>
+        [Fact]
+        public void ExtractIMURangeGyroscopeTest3()
+        {
+            byte[] bytes = new byte[6];
+            bytes[4] = 0x34;
+            double range = ExtractIMURangeGyroscope(bytes);
+
+            Assert.Equal(1000, range);
+        }
+
+        /// <summary>
+        /// Tests the method ExtractIMURangeGyroscope
+        /// </summary>
+        [Fact]
+        public void ExtractIMURangeGyroscopeTest4()
+        {
+            byte[] bytes = new byte[6];
+            bytes[4] = 0x3C;
+            double range = ExtractIMURangeGyroscope(bytes);
+
+            Assert.Equal(2000, range);
+        }
+
+        /// <summary>
         /// Test the method ExctractIMUScaleFactorGyroscope
         /// </summary>
         [Fact]
-        public void ExctractIMUScaleFactorGyroscopeTest()
+        public void ExctractIMUScaleFactorGyroscopeTest1()
         {
             byte[] bytes = new byte[6];
             bytes[4] = 0x29;
             double range = ExctractIMUScaleFactorGyroscope(bytes);
 
             Assert.Equal(65.5, range);
+        }
+
+        /// <summary>
+        /// Test the method ExctractIMUScaleFactorGyroscope
+        /// </summary>
+        [Fact]
+        public void ExctractIMUScaleFactorGyroscopeTest2()
+        {
+            byte[] bytes = new byte[6];
+            bytes[4] = 0x24;
+            double range = ExctractIMUScaleFactorGyroscope(bytes);
+
+            Assert.Equal(131, range);
+        }
+
+        /// <summary>
+        /// Test the method ExctractIMUScaleFactorGyroscope
+        /// </summary>
+        [Fact]
+        public void ExctractIMUScaleFactorGyroscopeTest3()
+        {
+            byte[] bytes = new byte[6];
+            bytes[4] = 0x34;
+            double range = ExctractIMUScaleFactorGyroscope(bytes);
+
+            Assert.Equal(32.8, range);
+        }
+
+        /// <summary>
+        /// Test the method ExctractIMUScaleFactorGyroscope
+        /// </summary>
+        [Fact]
+        public void ExctractIMUScaleFactorGyroscopeTest4()
+        {
+            byte[] bytes = new byte[6];
+            bytes[4] = 0x3C;
+            double range = ExctractIMUScaleFactorGyroscope(bytes);
+
+            Assert.Equal(16.4, range);
         }
     }
 }
