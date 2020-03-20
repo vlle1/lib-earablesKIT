@@ -85,7 +85,8 @@ namespace EarablesKIT.Models.Library
                     characters.BatteryChar = await Service.GetCharacteristicAsync(Guid.Parse(BATTERY_CHAR));
                     characters.OffsetChar = await Service.GetCharacteristicAsync(Guid.Parse(OFFSET_CHAR));
                     characters.AccelerometerGyroscopeLPFChar = await Service.GetCharacteristicAsync(Guid.Parse(ACC_GYRO_LPF_CHAR));
-                }
+                } 
+                // In case someone tries to connect with another bluetoothdevice instead of earables
                 catch (Exception exc)
                 {
                     throw new ConnectionFailedException("Failed to connect. Please try again and make sure to connect with" +
